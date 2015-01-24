@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="es.logongas.iothome.modelo.Device" >
+        
+        <id name="idDevice" >
+            <generator class="identity" />
+        </id>
+
+        <property name="name" />
+        <property name="streamName0" />
+        <property name="streamName1" />
+        <property name="streamName2" />
+        <property name="streamName3" />
+        <property name="streamName4" />
+        <property name="streamName5" />
+        <property name="streamName6" />
+        <property name="streamName7" />
+        <property name="streamName8" />
+        <property name="streamName9" />
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/iothome">
+    <Resource
+          name="jdbc/iothome"
+          type="javax.sql.DataSource"
+          auth="Container"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://localhost:3306/iothome"
+          username="iothome" password="iothome"
+          maxActive="50" maxIdle="30" maxWait="10000"
+          validationQuery="SELECT 1 FROM DUAL"
+          testOnBorrow="true"
+    />      
+</Context>

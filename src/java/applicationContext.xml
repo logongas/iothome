@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+">
+
+    <!--Permite usar entre otras la anotación @Autowired -->
+    <context:annotation-config/>
+    <!--Permite usar entre otras las anotaciones @Component y @Controller -->
+    <!-- <context:component-scan base-package="es.fpmislata.examen.datos"/> -->
+
+    <bean class="es.logongas.ix3.dao.impl.DAOFactoryImplHibernate" >
+        <property name="domainBasePackageName"     value="es.logongas.iothome.modelo" />
+        <property name="interfaceBasePackageName"  value="es.logongas.iothome.dao" />
+        <property name="implBasePackageName"       value="es.logongas.iothome.dao" />
+    </bean>
+
+    <bean id="authenticationManager" class="es.logongas.ix3.security.authentication.impl.AuthenticationManagerImpl"  >
+        <property name="authenticationProviders">
+            <list>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="authorizationManager" class="es.logongas.ix3.security.authorization.impl.AuthorizationManagerImpl"  >
+        <property name="defaultAuthorization" value="true" />
+    </bean>    
+    
+</beans>
