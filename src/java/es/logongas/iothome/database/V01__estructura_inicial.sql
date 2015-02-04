@@ -1,29 +1,31 @@
 
-    create table Device (
-        idDevice integer not null auto_increment,
-        name varchar(255),
-        streamName0 varchar(255),
-        streamName1 varchar(255),
-        streamName2 varchar(255),
-        streamName3 varchar(255),
-        primary key (idDevice)
-    );
+CREATE TABLE `device` (
+	`idDevice` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NULL DEFAULT NULL,
+	`streamName0` VARCHAR(255) NULL DEFAULT NULL,
+	`streamName1` VARCHAR(255) NULL DEFAULT NULL,
+	`streamName2` VARCHAR(255) NULL DEFAULT NULL,
+	`streamName3` VARCHAR(255) NULL DEFAULT NULL,
+	PRIMARY KEY (`idDevice`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
 
-    create table Measure (
-        idMeasure integer not null auto_increment,
-        time datetime,
-        idDevice integer,
-        stream0 float precision,
-        stream1 float precision,
-        stream2 float precision,
-        stream3 float precision,
-        primary key (idMeasure),
-        INDEX `Indice3` (`idDevice`, `time`)
-    );
-
-    alter table Measure 
-        add index FK9B263D3E29260516 (idDevice), 
-        add constraint FK9B263D3E29260516 
-        foreign key (idDevice) 
-        references Device (idDevice);
+CREATE TABLE `measure` (
+	`idMeasure` INT(11) NOT NULL AUTO_INCREMENT,
+	`time` DATETIME NULL DEFAULT NULL,
+	`idDevice` INT(11) NULL DEFAULT NULL,
+	`stream0` FLOAT NULL DEFAULT NULL,
+	`stream1` FLOAT NULL DEFAULT NULL,
+	`stream2` FLOAT NULL DEFAULT NULL,
+	`stream3` FLOAT NULL DEFAULT NULL,
+	PRIMARY KEY (`idMeasure`),
+	INDEX `FK9B263D3E29260516` (`idDevice`),
+	INDEX `Indice 3` (`idDevice`, `time`),
+	CONSTRAINT `FK9B263D3E29260516` FOREIGN KEY (`idDevice`) REFERENCES `device` (`idDevice`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
 
