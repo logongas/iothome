@@ -21,7 +21,7 @@
     <bean id="authenticationManager" class="es.logongas.ix3.security.authentication.impl.AuthenticationManagerImpl"  >
         <property name="authenticationProviders">
             <list>
-                
+                <bean class="es.logongas.iothome.security.AuthenticationProviderImplSimple" />
             </list>
         </property>
     </bean>

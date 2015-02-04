@@ -16,6 +16,7 @@
         <property name="stream0"  />
         <property name="stream1" />
         <property name="stream2" />
+        <property name="stream3" />
 
 
     </class>

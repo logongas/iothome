@@ -6,12 +6,6 @@
         streamName1 varchar(255),
         streamName2 varchar(255),
         streamName3 varchar(255),
-        streamName4 varchar(255),
-        streamName5 varchar(255),
-        streamName6 varchar(255),
-        streamName7 varchar(255),
-        streamName8 varchar(255),
-        streamName9 varchar(255),
         primary key (idDevice)
     );
 
@@ -19,17 +13,12 @@
         idMeasure integer not null auto_increment,
         time datetime,
         idDevice integer,
-        stream0 double precision,
-        stream1 double precision,
-        stream2 double precision,
-        stream3 double precision,
-        stream4 double precision,
-        stream5 double precision,
-        stream6 double precision,
-        stream7 double precision,
-        stream8 double precision,
-        stream9 double precision,
-        primary key (idMeasure)
+        stream0 float precision,
+        stream1 float precision,
+        stream2 float precision,
+        stream3 float precision,
+        primary key (idMeasure),
+        INDEX `Indice3` (`idDevice`, `time`)
     );
 
     alter table Measure 

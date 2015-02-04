@@ -1,0 +1,112 @@
+<div class="main-content">
+    <div class="panel">
+        <div class="panel-heading"><h3 class="panel-title">Filtro</h3></div>
+        <div class="panel-body">
+            <div class="row" >
+                <div class="col-xs-12 col-sm-2">
+                    <div class="form-group">
+                        <label for="model.startDate">Fecha Inicio</label>
+                        <div class="input-group">
+                            <input ng-model="model.startDate" id="model.startDate" name="model.startDate" class="form-control"  type="text"  ix3-date ix3-datepicker />
+                            <span class="input-group-addon" ><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <div class="form-group">
+                        <label for="model.startTime">Hora Inicio</label>
+                        <input ng-model="model.startTime" id="model.startTime" name="model.startTime" class="form-control"  type="text"   />
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-2">
+                    <div class="form-group">
+                        <label for="model.endDate">Fecha Fin</label>
+                        <div class="input-group">
+                            <input ng-model="model.endDate" id="model.endDate" name="model.endDate" class="form-control"  type="text"  ix3-date ix3-datepicker />
+                            <span class="input-group-addon" ><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-xs-12 col-sm-2">
+                    <div class="form-group">
+                        <label for="model.endTime">Hora Fin</label>
+                        <input ng-model="model.endTime" id="model.endTime" name="model.endTime" class="form-control"  type="text"   />
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+
+                    <button ng-click="show()">Mostrar</button>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="panel">        
+                <div class="panel-heading"><h3 class="panel-title">{{device.streamName0}}</h3></div>
+                <div class="panel-body">
+                    <h2 style="color:{{device.streamColor0}}">{{totales.stream0 | number:0}} w</h2>
+                </div>
+            </div>           
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="panel">        
+                <div class="panel-heading"><h3 class="panel-title">{{device.streamName1}}</h3></div>
+                <div class="panel-body">
+                    <h2 style="color:{{device.streamColor1}}">{{totales.stream1 | number:0}} w</h2>
+                </div>
+            </div>             
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="panel">        
+                <div class="panel-heading"><h3 class="panel-title">{{device.streamName2}}</h3></div>
+                <div class="panel-body">
+                    <h2 style="color:{{device.streamColor2}}">{{totales.stream2 | number:0}} w</h2>
+                </div>
+            </div>             
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="panel">        
+                <div class="panel-heading"><h3 class="panel-title">{{device.streamName3}}</h3></div>
+                <div class="panel-body">
+                    <h2 style="color:{{device.streamColor3}}">{{totales.stream3 | number:0}} w</h2>
+                </div>
+            </div>             
+        </div>
+    </div>
+
+    <div class="panel">        
+        <div class="panel-heading"><h3 class="panel-title">Consumo medio por {{model.groupBy}}</h3></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div high-charts="configMainChart" high-charts-bind-controller="mainChart" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">        
+        <div class="panel-heading"><h3 class="panel-title">Consumo medio <strong>Total</strong> por {{model.groupBy}}</h3></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div high-charts="configSumChart" high-charts-bind-controller="sumChart" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                    <h2 style="color:#FF0000">{{totales.streamSum | number:0}} w</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

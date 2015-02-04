@@ -12,12 +12,7 @@
         <property name="streamName1" />
         <property name="streamName2" />
         <property name="streamName3" />
-        <property name="streamName4" />
-        <property name="streamName5" />
-        <property name="streamName6" />
-        <property name="streamName7" />
-        <property name="streamName8" />
-        <property name="streamName9" />
+
 
     </class>
 </hibernate-mapping>

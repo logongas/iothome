@@ -1,150 +1,265 @@
-var RealTimeData = function (layers) {
-    this.layers = layers;
-    this.timestamp = ((new Date()).getTime() / 1000) | 0;
-};
-
-RealTimeData.prototype.rand = function () {
-    return parseInt(Math.random() * 100) + 50;
-};
-
-RealTimeData.prototype.history = function (entries) {
-    if (typeof (entries) != 'number' || !entries) {
-        entries = 60;
-    }
-
-    var history = [];
-    for (var k = 0; k < this.layers; k++) {
-        history.push({values: []});
-    }
-
-    for (var i = 0; i < entries; i++) {
-        for (var j = 0; j < this.layers; j++) {
-            history[j].values.push({time: this.timestamp, y: this.rand()});
-        }
-        this.timestamp++;
-    }
-
-    return history;
-};
-
-RealTimeData.prototype.next = function () {
-    var entry = [];
-    for (var i = 0; i < this.layers; i++) {
-        entry.push({time: this.timestamp, y: this.rand()});
-    }
-    this.timestamp++;
-    return entry;
-}
-
-
 app.controller('MainController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
-        $scope.valueTotal = 0;
-        $scope.value0 = 0;
-        $scope.value1 = 0;
-        $scope.value2 = 0;
-        var length=60;
-        $scope.lineChartConfig = {
-            type: 'time.line',
-            data: [
-                {
-                    label:"Stream 0",
-                    values:[length]
-                },
-                {
-                    label:"Stream 1",
-                    values:[length]
-                },
-                {
-                    label:"Stream 2",
-                    values:[length]
-                },
-                {
-                    label:"Stream Total",
-                    values:[length]
-                }                
-            ],
-            axes: ['left', 'bottom', 'right']
+        $scope.device = {
+            idDevice: 1,
+            name: "Consumo casa",
+            streamName0: "cocina",
+            streamName1: "enchufes A",
+            streamName2: "enchufes B",
+            streamName3: "luces",
+            streamColor0: "#7CB5EC",
+            streamColor1: "#434348",
+            streamColor2: "#90ED7D",
+            streamColor3: "#F7A35C"
+        };
+
+
+
+        $scope.measure = {
+            stream0: 0,
+            stream1: 0,
+            stream2: 0,
+            stream3: 0,
+            valueTotal: 0
         }
 
+        var lastTime = 0;
+        var inicializado = false;
         $scope.refresh = function () {
-            $timeout(function () {
+            $http({
+                method: "GET",
+                url: $scope.getContextPath() + "/api/Measure/$namedsearch/getLast",
+                params: {
+                    device: $scope.device.idDevice
+                }
+            }).then(function (response) {
 
-                $http({
-                    method: "GET",
-                    url: $scope.getContextPath() + "/api/Measure/last",
-                    params: {
-                        idDevice: 1
-                    }
-                }).then(function (response) {
+                $scope.measure = response.data;
+                var currentTime = moment($scope.measure.time, "YYYY-MM-DDTHH:mm:ss.SSSZ", true).format("x") * 1; //.subtract(moment().utcOffset(),"minute");
 
-                    response.time = moment(response.data.time, "YYYY-MM-DDTHH:mm:ss.SSSZZ", true).toDate();
+                if (inicializado === false) {
 
-                    $scope.value0 = response.data.stream0;
-                    $scope.value1 = response.data.stream1;
-                    $scope.value2 = response.data.stream2;
-                    $scope.valueTotal = $scope.value0 + $scope.value1 + $scope.value2;
+                    $scope.inicializar(currentTime);
 
-                    var entry = [];
-                    entry.push({time: response.time.getTime(), y: $scope.value0});
-                    entry.push({time: response.time.getTime(), y: $scope.value1});
-                    entry.push({time: response.time.getTime(), y: $scope.value2});
-                    entry.push({time: response.time.getTime(), y: $scope.valueTotal});
-                    $scope.lineChartConfig.push(entry);
+                    inicializado = true;
+                }
 
-                    $scope.refresh();
-                }, function (response) {
-                    alert.log("Error al cargar los datos:" + response.status);
-                    $scope.refresh();
-                });
 
-            }, 6000);
+                if (currentTime !== lastTime) {
+                    $scope.measure.valueTotal = $scope.measure.stream0 + $scope.measure.stream1 + $scope.measure.stream2 + $scope.measure.stream3;
+
+                    $scope.sumChart.updatePointSerie(0, currentTime, $scope.measure.valueTotal);
+                    $scope.mainChart.updatePointSerie(0, currentTime, $scope.measure.stream0);
+                    $scope.mainChart.updatePointSerie(1, currentTime, $scope.measure.stream1);
+                    $scope.mainChart.updatePointSerie(2, currentTime, $scope.measure.stream2);
+                    $scope.mainChart.updatePointSerie(3, currentTime, $scope.measure.stream3);
+
+                    $scope.gauge0.updatePoint($scope.measure.stream0);
+                    $scope.gauge1.updatePoint($scope.measure.stream1);
+                    $scope.gauge2.updatePoint($scope.measure.stream2);
+                    $scope.gauge3.updatePoint($scope.measure.stream3);
+
+                    lastTime = currentTime;
+
+                }
+                $timeout($scope.refresh, 3000);
+            }, function (response) {
+                alert.log("Error al cargar los datos:" + response.status);
+                $timeout($scope.refresh, 3000);
+            });
+
+
+
         };
 
-        $scope.format = function (value) {
-            return value.toFixed(0) + 'w';
-        };
 
         $scope.refresh();
 
-    }]);
+        $scope.inicializar = function (time) {
+            $scope.mainChart.updateSerie(0, getInitialDataArray(time));
+            $scope.mainChart.updateSerie(1, getInitialDataArray(time));
+            $scope.mainChart.updateSerie(2, getInitialDataArray(time));
+            $scope.mainChart.updateSerie(3, getInitialDataArray(time));
+            $scope.sumChart.updateSerie(0, getInitialDataArray(time));
+        }
 
+        $scope.configMainChart = {
+            title: {
+                text: null
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Consumo (watios)'
+                },
+                min: 0
+            },
+            legend: {
+                enabled: true
+            },
+            credits: {
+                enabled: false
+            },
+            color: [$scope.device.streamColor0, $scope.device.streamColor1, $scope.device.streamColor2, $scope.device.streamColor3],
+            series: [{
+                    type: 'line',
+                    name: $scope.device.streamName0,
+                    data: []
 
-app.directive('iotGauge', [function () {
-        return {
-            restrict: 'A',
-            link: function ($scope, element, attributes) {
-                var gauge;
-                var config = $scope.$eval(attributes.iotGauge);
-                config.type = "time.gauge";
-                gauge = $(element).epoch(config);
-
-                $scope.$watch(attributes.iotGauge, function (newValue, oldValue) {
-                    gauge.update(newValue.value);
-                }, true)
-
-            }
+                }, {
+                    type: 'line',
+                    name: $scope.device.streamName1,
+                    data: []
+                }, {
+                    type: 'line',
+                    name: $scope.device.streamName2,
+                    data: []
+                }, {
+                    type: 'line',
+                    name: $scope.device.streamName3,
+                    data: []
+                }]
         };
-    }]);
 
-app.directive('iotLineChart', [function () {
-        return {
-            restrict: 'A',
-            link: function ($scope, element, attributes) {
-                var lineChart;
-                var config = $scope.$eval(attributes.iotLineChart);
-                config.type = "time.line";
+        $scope.configSumChart = {
+            title: {
+                text: null
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Consumo (watios)'
+                },
+                min: 0
+            },
+            legend: {
+                enabled: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                    type: 'line',
+                    name: 'Total',
+                    data: []
+                }],
+             colors:['#FF0000']
+        };
 
-                config.push = function (entry) {
-                    lineChart.push(entry);
+        var gaugeOptions = {
+            chart: {
+                type: 'solidgauge'
+            },
+            credits: {
+                enabled: false
+            },
+            title: null,
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
                 }
-
-                lineChart = $(element).epoch(config);
-
-
-
+            },
+            tooltip: {
+                enabled: false
+            },
+            // the value axis
+            yAxis: {
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickPixelInterval: 400,
+                tickWidth: 0,
+                title: {
+                    y: -70,
+                    text: 'Watios'
+                },
+                labels: {
+                    y: 16
+                },
+                min: 0,
+                max: 2000
+            },
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
             }
         };
+
+
+        $scope.configGauge0 = Highcharts.merge(gaugeOptions, {
+            series: [{
+                    name: 'Watios',
+                    data: [1]
+                }],
+            yAxis: {
+                minColor: $scope.device.streamColor0,
+                maxColor: $scope.device.streamColor0
+            }
+
+        })
+
+        $scope.configGauge1 = Highcharts.merge(gaugeOptions, {
+            series: [{
+                    name: 'Watios',
+                    data: [1]
+                }],
+            yAxis: {
+                minColor: $scope.device.streamColor1,
+                maxColor: $scope.device.streamColor1
+            }
+
+        })
+
+        $scope.configGauge2 = Highcharts.merge(gaugeOptions, {
+            series: [{
+                    name: 'Watios',
+                    data: [1]
+                }],
+            yAxis: {
+                minColor: $scope.device.streamColor2,
+                maxColor: $scope.device.streamColor2
+            }
+
+        })
+        $scope.configGauge3 = Highcharts.merge(gaugeOptions, {
+            series: [{
+                    name: 'Watios',
+                    data: [1]
+                }],
+            yAxis: {
+                minColor: $scope.device.streamColor3,
+                maxColor: $scope.device.streamColor3
+            }
+
+        })
+
     }]);
 
+
+
+function getInitialDataArray(time) {
+    var data = [];
+    for (var i = -50; i < 0; i++) {
+        data.push({
+            x: time + (i * 10000),
+            y: 0
+        });
+    }
+    return data;
+}
 

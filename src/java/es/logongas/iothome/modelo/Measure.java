@@ -21,7 +21,26 @@ public class Measure {
     private Float stream0;
     private Float stream1;
     private Float stream2;
+    private Float stream3;
 
+    public Measure() {
+    }
+
+    
+    
+    public Measure(int idMeasure, Date time, Device device, Float stream0, Float stream1, Float stream2, Float stream3) {
+        this.idMeasure = idMeasure;
+        this.time = time;
+        this.device = device;
+        this.stream0 = stream0;
+        this.stream1 = stream1;
+        this.stream2 = stream2;
+        this.stream3 = stream3;
+    }
+
+    
+    
+    
     /**
      * @return the idMeasure
      */
@@ -106,4 +125,25 @@ public class Measure {
         this.stream2 = stream2;
     }
 
+    /**
+     * @return the stream3
+     */
+    public Float getStream3() {
+        return stream3;
+    }
+
+    /**
+     * @param stream3 the stream3 to set
+     */
+    public void setStream3(Float stream3) {
+        this.stream3 = stream3;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
+    
+    
 }

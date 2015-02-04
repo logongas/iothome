@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package es.logongas.iothome.modelo;
 
-import java.util.Date;
-import java.util.List;
+package es.logongas.iothome.modelo;
 
 /**
  *
@@ -19,22 +12,7 @@ public class Device {
     private String streamName1;
     private String streamName2;
     private String streamName3;
-    private String streamName4;
-    private String streamName5;
-    private String streamName6;
-    private String streamName7;
-    private String streamName8;
-    private String streamName9;
     
-    
-    public List<Measure> getMeasures(Date start,Date finish,Group groupBy) {
-        return null;
-    }
-    
-    public Measure getLastMeasure() {
-        return null;
-    }    
-
     /**
      * @return the idDevice
      */
@@ -118,90 +96,4 @@ public class Device {
     public void setStreamName3(String streamName3) {
         this.streamName3 = streamName3;
     }
-
-    /**
-     * @return the streamName4
-     */
-    public String getStreamName4() {
-        return streamName4;
-    }
-
-    /**
-     * @param streamName4 the streamName4 to set
-     */
-    public void setStreamName4(String streamName4) {
-        this.streamName4 = streamName4;
-    }
-
-    /**
-     * @return the streamName5
-     */
-    public String getStreamName5() {
-        return streamName5;
-    }
-
-    /**
-     * @param streamName5 the streamName5 to set
-     */
-    public void setStreamName5(String streamName5) {
-        this.streamName5 = streamName5;
-    }
-
-    /**
-     * @return the streamName6
-     */
-    public String getStreamName6() {
-        return streamName6;
-    }
-
-    /**
-     * @param streamName6 the streamName6 to set
-     */
-    public void setStreamName6(String streamName6) {
-        this.streamName6 = streamName6;
-    }
-
-    /**
-     * @return the streamName7
-     */
-    public String getStreamName7() {
-        return streamName7;
-    }
-
-    /**
-     * @param streamName7 the streamName7 to set
-     */
-    public void setStreamName7(String streamName7) {
-        this.streamName7 = streamName7;
-    }
-
-    /**
-     * @return the streamName8
-     */
-    public String getStreamName8() {
-        return streamName8;
-    }
-
-    /**
-     * @param streamName8 the streamName8 to set
-     */
-    public void setStreamName8(String streamName8) {
-        this.streamName8 = streamName8;
-    }
-
-    /**
-     * @return the streamName9
-     */
-    public String getStreamName9() {
-        return streamName9;
-    }
-
-    /**
-     * @param streamName9 the streamName9 to set
-     */
-    public void setStreamName9(String streamName9) {
-        this.streamName9 = streamName9;
-    }
-    
-    
 }
