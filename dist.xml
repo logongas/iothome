@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="fpempresa" default="default" basedir=".">
-    <description>Builds, tests, and runs the project fpempresa.</description>
+<project name="iothome" default="default" basedir=".">
+    <description>Builds, tests, and runs the project iothome.</description>
     <import file="nbproject/build-impl.xml"/>
 
     <target name="distOpenShift" depends="-configureAnt,-enableProduccion,clean,dist" >
@@ -81,7 +81,7 @@
         </xmltask>
         
         <!-- Cambiar el datasource de Hibernate -->
-        <replace file="${build.web.dir}/WEB-INF/classes/hibernate.cfg.xml" token="java:/comp/env/jdbc/fpempresa" value="java:/comp/env/jdbc/MySQLDS"/>
+        <replace file="${build.web.dir}/WEB-INF/classes/hibernate.cfg.xml" token="java:/comp/env/jdbc/iothome" value="java:/comp/env/jdbc/MySQLDS"/>
     </target>
 
 
