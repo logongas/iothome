@@ -18,6 +18,12 @@
         <property name="implBasePackageName"       value="es.logongas.iothome.dao" />
     </bean>
 
+    <bean class="es.logongas.ix3.service.impl.CRUDServiceFactoryImpl" >
+        <property name="domainBasePackageName"     value="es.logongas.iothome.modelo" />
+        <property name="interfaceBasePackageName"  value="es.logongas.iothome.service" />
+        <property name="implBasePackageName"       value="es.logongas.iothome.service" />
+    </bean>  
+
     <bean id="authenticationManager" class="es.logongas.ix3.security.authentication.impl.AuthenticationManagerImpl"  >
         <property name="authenticationProviders">
             <list>
