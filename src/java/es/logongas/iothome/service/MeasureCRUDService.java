@@ -7,7 +7,7 @@ package es.logongas.iothome.service;
 
 import es.logongas.iothome.modelo.Device;
 import es.logongas.iothome.modelo.Measure;
-import es.logongas.ix3.dao.NamedSearch;
+import es.logongas.ix3.service.NamedSearch;
 import es.logongas.ix3.service.CRUDService;
 import java.util.Date;
 import java.util.List;
